@@ -1,4 +1,4 @@
-name: vi_test
+name: command_test
 
 on:
   push:
@@ -15,4 +15,6 @@ jobs:
       - name: test
         run: |
          git clone https://github.com/ryuichiueda/glueutils
-         ./glueutils/test/test_all.bash
+         cd ./glueutils
+         make
+         ./test/test_all.bash
