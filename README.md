@@ -15,3 +15,13 @@ abc
 $ ./switch12 echo abc 2>&1 | rev
 cba
 ```
+
+### log2
+
+write the standard output to a file
+
+```
+$ log2 hoge ls 'aaaa'
+$ cat hoge
+ls: cannot access 'aaaa': No such file or directory
+```
