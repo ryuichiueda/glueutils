@@ -6,11 +6,11 @@ switch12: switch12.c log2.c ignerr.c
 	gcc -O3 -o ignerr -Wall ignerr.c
 
 install: switch12 log2 ignerr
-	mkdir -p ~/.glue/bin/
-	cp switch12 log2 ignerr ~/.glue/bin/
+	mkdir -p ${HOME}/.glue/bin/
+	cp switch12 log2 ignerr ${HOME}/.glue/bin/
 
 uninstall: switch12 log2 ignerr
-	rm -f ~/.glue/bin/*
+	rm -f ${HOME}/.glue/bin/*
 
 clean:
 	rm -f switch12 log2 ignerr
