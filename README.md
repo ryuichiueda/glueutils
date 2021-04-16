@@ -25,3 +25,14 @@ $ log2 hoge ls 'aaaa'
 $ cat hoge
 ls: cannot access 'aaaa': No such file or directory
 ```
+
+### ignerr
+
+ignore the exit status
+
+```
+$ ignerr ls aaaa
+ls: cannot access 'aaaa': No such file or directory
+$ echo $?
+0
+```
