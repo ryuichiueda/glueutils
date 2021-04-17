@@ -13,13 +13,13 @@ all: $(targets)
 
 install: $(targets)
 	mkdir -p ${HOME}/.glue/bin/
-	install -m 755 $(targets) ${HOME}/.glue/bin/
+	cd bin && install -m 755 $(targets) ${HOME}/.glue/bin/
 
 uninstall:
 	rm -f ${HOME}/.glue/bin/*
 
 clean:
-	rm -f $(targets)
+	cd bin && rm -f $(targets)
 
 test: $(targets)
 	./test/test_all.bash
