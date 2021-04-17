@@ -1,19 +1,26 @@
-all: switch12
+CC=gcc
+CFLAGS=-Wall -O2
+objs:=$(wildcard *.c)
+targets:=$(objs:.c= )
 
-switch12: switch12.c log2.c ign1.c ign2.c ign12.c ignerr.c
-	gcc -O3 -o switch12 -Wall switch12.c
-	gcc -O3 -o log2 -Wall log2.c
-	gcc -O3 -o ign1 -Wall ign1.c
-	gcc -O3 -o ign2 -Wall ign2.c
-	gcc -O3 -o ign12 -Wall ign12.c
-	gcc -O3 -o ignerr -Wall ignerr.c
+.PHONY:all
 
-install: switch12 log2 ign1 ign2 ign12 ignerr
+all: $(targets)
+
+.c:
+	$(CC) $(CFLAGS) -o $@ $<
+
+install: $(targets)
 	mkdir -p ${HOME}/.glue/bin/
-	install -m 755 switch12 log2 ign1 ign2 ign12 ignerr ${HOME}/.glue/bin/
+	install -m 755 $(targets) ${HOME}/.glue/bin/
 
-uninstall: switch12 log2 ign1 ign2 ign12 ignerr
+uninstall:
 	rm -f ${HOME}/.glue/bin/*
 
 clean:
-	rm -f switch12 log2 ign1 ign2 ign12 ignerr
+	rm -f $(targets)
+
+test: $(targets)
+	./test/test_all.bash
+
+# ref: https://hamu-tech.hatenadiary.org/entry/20121026/1351232511
