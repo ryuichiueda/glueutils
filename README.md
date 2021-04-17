@@ -2,6 +2,9 @@
 
 system commands for controlling redirection and exit status
 
+## Install
+
+Run `make install` then add `~/.glue/bin` to PATH.
 
 ## commands
 
