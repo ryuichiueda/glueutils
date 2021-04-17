@@ -5,5 +5,8 @@ dir=$(dirname $0)
 $dir/test_switch12.bash
 $dir/test_log2.bash
 $dir/test_ignerr.bash
+$dir/test_ign1.bash
+$dir/test_ign2.bash
+$dir/test_ign12.bash
 
 echo OK
