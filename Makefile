@@ -8,7 +8,8 @@ targets:=$(objs:.c= )
 all: $(targets)
 
 .c:
-	$(CC) $(CFLAGS) -o $@ $<
+	mkdir -p bin
+	$(CC) $(CFLAGS) -o bin/$@ $<
 
 install: $(targets)
 	mkdir -p ${HOME}/.glue/bin/
