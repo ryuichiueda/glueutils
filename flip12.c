@@ -5,8 +5,8 @@
 #include <string.h>
 
 void usage(void){
-	fputs("switch12: switch stdout and stderr\n", stderr);
-	fputs("usage: switch12 <command> [args]\n", stderr);
+	fputs("flip12: flip stdout and stderr\n", stderr);
+	fputs("usage: flip12 <command> [args]\n", stderr);
 	fputs("\nCopyright (C) 2021 Ryuichi Ueda\n", stderr);
 	fputs("Released under the MIT License.\n", stderr);
 	fputs("https://github.com/ryuichiueda/glueutils\n", stderr);
