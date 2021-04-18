@@ -8,14 +8,14 @@ Run `make install` then add `~/.glue/bin` to PATH.
 
 ## commands
 
-### switch12
+### flip12
 
 switch stdout and stderr
 
 ```bash
-$ switch12 echo abc | rev
+$ flip12 echo abc | rev
 abc
-$ switch12 echo abc 2>&1 | rev
+$ flip12 echo abc 2>&1 | rev
 cba
 ```
 
