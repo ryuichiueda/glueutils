@@ -8,6 +8,15 @@ Run `make install` then add `~/.glue/bin` to PATH.
 
 ## commands
 
+### juz
+
+serially connect the processes of the command in a pipeline
+
+```bash
+echo 1 | juz 10 awk '{print $1*2}' # connect 10 awks in a pipeline
+1024
+```
+
 ### flip12
 
 switch stdout and stderr
