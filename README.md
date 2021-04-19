@@ -17,6 +17,8 @@ echo 1 | juz 10 awk '{print $1*2}' # connect 10 awks in a pipeline
 1024
 ```
 
+"Juz" means Juzu（数珠）, which is a bracelet for buddists. It is composed of wooden balls chained a string.
+
 ### flip12
 
 switch stdout and stderr
