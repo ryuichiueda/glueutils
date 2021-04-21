@@ -21,6 +21,15 @@ void try_close(int fd){
 	}
 }
 
+void dup_and_close(int old, int new)
+{
+	try_close(new);
+	if(dup2(old, new) == -1){
+		printf("Error: %s\n", strerror(errno));
+		exit(1);
+	}
+	try_close(old);
+}
 
 int main(int argc, char * argv[])
 {
@@ -43,26 +52,19 @@ int main(int argc, char * argv[])
 		}
 
 		int pid = fork();
-		if(pid != 0){//parent proc
-			try_close(0);
-			try_close(pips[1]);
-			if(dup2(pips[0], 0) == -1){
-				printf("Error: %s\n", strerror(errno));
-				exit(1);
-			}
-			try_close(pips[0]);
-		}else{//child proc
+		if(pid == 0){//child proc
 			if(i < rep-1){
-				try_close(1);
 				try_close(pips[0]);
-				if(dup2(pips[1], 1) == -1){
-					printf("Error: %s\n", strerror(errno));
-					exit(1);
-				}
+				dup_and_close(pips[1], 1);
+			}else{
+				try_close(pips[1]);
 			}
-			try_close(pips[1]);
 			return -execvp(argv[2], &argv[2]);
 		}
+
+		//parent proc
+		try_close(pips[1]);
+		dup_and_close(pips[0], 0);
 	}
 
 	int wstatus;
