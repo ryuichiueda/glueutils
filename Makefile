@@ -9,7 +9,7 @@ all: $(targets)
 
 .c:
 	mkdir -p bin
-	$(CC) $(CFLAGS) -o bin/$@ $<
+	$(CC) $(CFLAGS) -o bin/$@ $< -lpthread
 
 install: $(targets)
 	mkdir -p ${HOME}/.glue/bin/

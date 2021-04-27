@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <pthread.h>
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/prctl.h>
@@ -21,10 +22,29 @@ void try_close(int fd){
 	}
 }
 
+void thread_read(void *arg)
+{
+	int *fd = (int *)arg;
+	char buf[1024];
+	int ret = 1;
+	while (ret > 0){
+		int ret = read(*fd, &buf, 1024);
+		for(int i=0;i<ret;i++){
+			putchar(buf[i]);
+		}
+	}
+	fflush(stdout);
+
+	if(ret == -1){
+		fputs("Error: reading error\n", stderr);
+		exit(1);
+	}
+	try_close(*fd);
+}
 
 int main(int argc, char * argv[])
 {
-	if(argc < 3){
+	if(argc < 2){
 		usage();
 		exit(1);
 	}
@@ -46,7 +66,7 @@ int main(int argc, char * argv[])
 		try_close(0);
 		try_close(pips[1]);
 		if(dup2(pips[0], 0) == -1){
-			printf("Error: %s\n", strerror(errno));
+			fprintf(stderr, "Error: %s\n", strerror(errno));
 			exit(1);
 		}
 		try_close(pips[0]);
@@ -56,32 +76,26 @@ int main(int argc, char * argv[])
 		close(epips[1]);
 
 		try_close(pips[1]);
+
+		/*
+		close(1);
+		dup2(pips[1], 1);
+		close(pips[1]);
+		*/
 		return -execvp(argv[1], &argv[1]);
 	}
 
-	char buf[1024];
-	int ret = 1;
-	while (ret > 0){
-		int ret = read(epips[0], &buf, 1024);
-		fprintf(stderr, "%d\n", ret);
-		for(int i=0;i<ret;i++){
-			putchar(buf[i]);
-		}
-	}
-	fflush(stdout);
-
-	if(ret == -1)
-		exit(1);
-
-	close(epips[0]);
+	pthread_t pthread;
+	pthread_create(&pthread, NULL, (void *)thread_read, &epips[0]);
 
 	int wstatus;
 	int wpid;
 	int lasterror = 0;
-	while((wpid = waitpid(-1, &wstatus, 0)) > 0){
+	if((wpid = waitpid(pid, &wstatus, 0)) > 0){
 		if(WIFEXITED(wstatus) && WEXITSTATUS(wstatus)){
 			lasterror = WEXITSTATUS(wstatus);
 		}
 	}
+
 	exit(lasterror);
 }
