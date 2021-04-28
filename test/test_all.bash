@@ -11,5 +11,6 @@ $dir/test_ign12.bash
 $dir/test_juz.bash
 $dir/test_rep.bash
 $dir/test_con12.bash
+$dir/test_con12safe.bash
 
 echo OK
