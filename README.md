@@ -41,6 +41,37 @@ $ flip12 echo abc 2>&1 | rev
 cba
 ```
 
+### con12
+
+merge stderr into stdout and output
+
+```
+$ con12 strace seq 100
+...
+fstat(1, {st_mode=S_IFIFO|0600, st_size=0, ...}) = 0
+write(1, "1\n2\n3\n4\n5\n6\n7\n8\n9\n10\n11\n12\n13\n14"..., 2921
+2
+3
+4
+...
+```
+
+### con12safe
+
+merge stderr into stdout and output safely with it's internal buffer and mutex
+
+```bash
+$ con12safe strace seq 100
+...
+mmap(NULL, 6758560, PROT_READ, MAP_PRIVATE, 4, 0) = 0x7f0ed9267000
+close(4)                                = 0
+fstat(1, {st_mode=S_IFIFO|0600, st_size=0, ...}) = 0
+1                                                <- never mixed into errors
+2
+3
+...
+```
+
 ### log2
 
 write the standard output to a file

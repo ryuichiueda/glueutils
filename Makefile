@@ -1,27 +1,21 @@
-CC=gcc
-CFLAGS=-Wall -O2
-objs:=$(wildcard *.c)
-targets:=$(objs:.c= )
-
-.PHONY:all
-
-all: $(targets)
-
-.c:
+all:
 	mkdir -p bin
-	$(CC) $(CFLAGS) -o bin/$@ $< -lpthread
-
-install: $(targets)
-	mkdir -p ${HOME}/.glue/bin/
-	cd bin && install -m 755 $(targets) ${HOME}/.glue/bin/
-
-uninstall:
-	rm -f ${HOME}/.glue/bin/*
+	$(MAKE) -C src
+	$(MAKE) -C src_con12
 
 clean:
-	cd bin && rm -f $(targets)
+	$(MAKE) clean -C src_con12
+	$(MAKE) clean -C src
+	rmdir -p bin
 
-test: $(targets)
+test: all
 	./test/test_all.bash
 
-# ref: https://hamu-tech.hatenadiary.org/entry/20121026/1351232511
+install:
+	mkdir -p bin
+	mkdir -p ${HOME}/.glue/bin/
+	$(MAKE) install -C src
+	$(MAKE) install -C src_con12
+
+uninstall:
+	rm -f ~/.glue/bin/*

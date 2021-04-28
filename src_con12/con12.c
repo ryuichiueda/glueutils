@@ -52,13 +52,19 @@ int main(int argc, char * argv[])
 	int pips[2];
 	if(pipe(pips) < 0){
 		fputs("Error: pipe open error", stderr);
-			exit(1);
+		exit(1);
 	}
 
 	int epips[2];
 	if(pipe(epips) < 0){
 		fputs("Error: pipe open error", stderr);
-			exit(1);
+		exit(1);
+	}
+
+	int opips[2];
+	if(pipe(opips) < 0){
+		fputs("Error: pipe open error", stderr);
+		exit(1);
 	}
 
 	int pid = fork();
@@ -70,23 +76,26 @@ int main(int argc, char * argv[])
 			exit(1);
 		}
 		try_close(pips[0]);
+
 	}else{//child proc
 		close(2);
 		dup2(epips[1], 2);
 		close(epips[1]);
-
 		try_close(pips[1]);
 
-		/*
 		close(1);
-		dup2(pips[1], 1);
-		close(pips[1]);
-		*/
+		dup2(opips[1], 1);
+	//	close(opips[1]);
+		try_close(opips[1]);
+
 		return -execvp(argv[1], &argv[1]);
 	}
 
 	pthread_t pthread;
 	pthread_create(&pthread, NULL, (void *)thread_read, &epips[0]);
+
+	pthread_t pthread2;
+	pthread_create(&pthread2, NULL, (void *)thread_read, &opips[0]);
 
 	int wstatus;
 	int wpid;
@@ -96,6 +105,7 @@ int main(int argc, char * argv[])
 			lasterror = WEXITSTATUS(wstatus);
 		}
 	}
+
 
 	exit(lasterror);
 }
