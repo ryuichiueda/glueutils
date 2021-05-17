@@ -35,7 +35,7 @@ void *thread_read(void *arg)
 	string line;
 	int ret = 1;
 	while (ret > 0){
-		int ret = read(*fd, &buf, 1024);
+		ret = read(*fd, &buf, 1024);
 		for(int i=0;i<ret;i++){
 			line += buf[i];
 			if(buf[i] == '\n'){

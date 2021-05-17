@@ -28,7 +28,7 @@ void thread_read(void *arg)
 	char buf[1024];
 	int ret = 1;
 	while (ret > 0){
-		int ret = read(*fd, &buf, 1024);
+		ret = read(*fd, &buf, 1024);
 		for(int i=0;i<ret;i++){
 			putchar(buf[i]);
 		}
