@@ -4,7 +4,7 @@ on:
   push:
     paths-ignore:
       - '**.md'
-    
+
 jobs:
   build:
     runs-on: ubuntu-18.04
@@ -14,7 +14,5 @@ jobs:
 
       - name: test
         run: |
-         git clone -b "${GITHUB_REF#refs/heads/}" https://github.com/ryuichiueda/glueutils
-         cd ./glueutils
          make
          ./test/test_all.bash
